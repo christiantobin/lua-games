@@ -1,10 +1,9 @@
 # Lua Games
 
-## Created Using ChatGPT
+Created using ChatGPT
 
 ## Install
 
-<ul>Clone the repo
-  Modify the bankroll file path
-  `Lua path/to/game_file.lua`
-</ul>
+- Clone the repo
+- Modify the bankroll file path
+- `Lua path/to/game_file.lua`
