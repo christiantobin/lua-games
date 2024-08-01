@@ -228,7 +228,7 @@ local function playBlackjack()
 		local adjustingBet = true
 		while adjustingBet do
 			print("\nAdjust your bet: $" .. bet)
-			print("Press 'u' to increase, 'd' to decrease, 's' to start")
+			print("Press 'u' to increase, 'd' to decrease, 's' to start, or enter a number:")
 			local betInput = io.read()
 			if betInput == "" then
 				betInput = "s"
@@ -241,6 +241,14 @@ local function playBlackjack()
 				end
 			elseif betInput == "s" then
 				adjustingBet = false
+			else
+				local num = tonumber(betInput)
+				if num and num >= MIN_BET then
+					bet = num
+					adjustingBet = false
+				else
+					print("Invalid input. Please enter 'u', 'd', 's', or a number.")
+				end
 			end
 		end
 
@@ -276,7 +284,8 @@ local function playBlackjack()
 
 			-- Dealer's turn
 			while
-				handValue(dealerHand) < DEALER_STAND or (handValue(dealerHand) == DEALER_STAND and isSoft17(dealerHand))
+				handValue(dealerHand) < DEALER_STAND
+				or (handValue(dealerHand) == DEALER_STAND and isSoft17(dealerHand))
 			do
 				table.insert(dealerHand, table.remove(deck))
 			end
