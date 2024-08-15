@@ -84,6 +84,9 @@ end
 
 -- Poker hand evaluation functions
 local function isFlush(hand)
+	if #hand < 5 then
+		return false
+	end -- Ensure the hand has 5 cards
 	local suit = hand[1].suit
 	for i = 2, #hand do
 		if hand[i].suit ~= suit then
@@ -94,6 +97,9 @@ local function isFlush(hand)
 end
 
 local function isStraight(hand)
+	if #hand < 5 then
+		return false
+	end -- Ensure the hand has 5 cards
 	local cardValues = {}
 	for _, card in ipairs(hand) do
 		table.insert(cardValues, cardValue(card))
@@ -117,6 +123,9 @@ local function countRanks(hand)
 end
 
 local function evaluateHand(hand)
+	if #hand < 5 then
+		return "Invalid Hand"
+	end -- Ensure the hand has 5 cards
 	local flush = isFlush(hand)
 	local straight = isStraight(hand)
 	local rankCounts = countRanks(hand)
