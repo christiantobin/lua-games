@@ -46,7 +46,7 @@ local function videoPoker()
 		for i, hand in ipairs(hands) do
 			print(shared.coloredText("green", "\nHand " .. i .. ":"))
 			shared.printHand(hand)
-			print("Enter the card positions (1-5) to hold, separated by spaces, or press Enter to hold all:")
+			print("Enter the card positions (1-5) to hold, separated by spaces, or press Enter to discard all:")
 			local holds = io.read()
 			local holdPositions = {}
 			for position in holds:gmatch("%d") do
