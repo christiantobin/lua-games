@@ -120,36 +120,45 @@ local function evaluateHand(hand)
 	local flush = isFlush(hand)
 	local straight = isStraight(hand)
 	local rankCounts = countRanks(hand)
+	local numPairs = 0
+	local threes = false
+	local fours = false
+	local jacksOrBetter = false
+
+	for rank, count in pairs(rankCounts) do
+		if count == 4 then
+			fours = true
+		elseif count == 3 then
+			threes = true
+		elseif count == 2 then
+			numPairs = numPairs + 1
+			if cardValue({ value = rank }) >= 11 then
+				jacksOrBetter = true
+			end
+		end
+	end
 
 	if flush and straight and cardValue(hand[1]) == 14 then
 		return "Royal Flush"
 	elseif flush and straight then
 		return "Straight Flush"
-	elseif rankCounts[4] then
+	elseif fours then
 		return "Four of a Kind"
-	elseif rankCounts[3] and rankCounts[2] then
+	elseif threes and numPairs == 1 then
 		return "Full House"
 	elseif flush then
 		return "Flush"
 	elseif straight then
 		return "Straight"
-	elseif rankCounts[3] then
+	elseif threes then
 		return "Three of a Kind"
-	elseif rankCounts[2] and tableCount(rankCounts[2]) == 2 then
+	elseif numPairs == 2 then
 		return "Two Pair"
-	elseif rankCounts[2] then
-		return "One Pair"
+	elseif jacksOrBetter then
+		return "Jacks or Better"
 	else
 		return "High Card"
 	end
-end
-
-local function tableCount(tbl)
-	local count = 0
-	for _ in pairs(tbl) do
-		count = count + 1
-	end
-	return count
 end
 
 local function payoutMultiplier(handRank)
@@ -162,7 +171,7 @@ local function payoutMultiplier(handRank)
 		["Straight"] = 4,
 		["Three of a Kind"] = 3,
 		["Two Pair"] = 2,
-		["One Pair"] = 1,
+		["Jacks or Better"] = 1,
 		["High Card"] = 0,
 	}
 	return payouts[handRank] or 0
